@@ -7,7 +7,7 @@ margin-bottom: 30px;
 export const OptionBtn = styled.button`
   display: block;
   max-width: 190px;
-  padding: 10px 35px;
+  padding: 10px 15px;
   border-radius: 30px;
   color: #ffffff;
   background-color: #505cfd;
