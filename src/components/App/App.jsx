@@ -1,5 +1,9 @@
 import { Component } from 'react';
-import {Container, Title} from './App.styled'
+import { Statistic } from '../Statistic/Statistic'
+import { FeedbackOptions } from '../FeedbackBtn/FeedbackOptions'
+import { Section } from '../Section/Section'
+import {Notification} from '../Notification/Notification'
+import {Container} from './App.styled'
 
 class App extends Component {
   state = {
@@ -16,10 +20,10 @@ class App extends Component {
     const { good, neutral, bad } = this.state;
     return good+neutral+bad 
   }
-  countPositiveFeedbackPercentage = (feedbackValues) => {
+  countPositiveFeedbackPercentage = () => {
     const sum = this.countTotalFeedback();
     const { good } = this.state;
-    let percent= 0;
+    let percent;
     percent = good > 0 ?
       Number.parseInt(good / sum * 100) : 0;
     return percent
@@ -29,21 +33,21 @@ class App extends Component {
     const { good, neutral, bad } = this.state;
     return (
       <Container>
-        <Title>Please leave feedback</Title>
-        {options.map(option => (
-          <button key={option} type='button'onClick={()=>this.makeFeedback(option)}>{option}
-          </button>))}
-        <h2>Statistic</h2>
-        <ul>
-          <li>Good: {good}</li>
-          <li>Neutral: {neutral}</li>
-          <li>Bad: {bad}</li>
-        </ul>
-        <p>Total: {this.countTotalFeedback()}</p>
-        <p>Positive feedback: {this.countPositiveFeedbackPercentage()}%</p>
-      </Container>
+        <Section title="Please leave feedback">
+          <FeedbackOptions options={options}
+          onLeaveFeedback={this.makeFeedback} />
+        </Section>
+        {this.countTotalFeedback() === 0 ? 
+        (<Notification message="There is no feedback"/>):
+        (<Section title="Statistics">
+          <Statistic good={good}
+          neutral={neutral}
+          bad={bad}
+          total={this.countTotalFeedback()}
+          positivePercentage={this.countPositiveFeedbackPercentage()} />
+        </Section>)}
+      </Container> 
       );
   }
-
 };
 export { App };
